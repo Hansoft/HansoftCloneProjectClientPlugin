@@ -1,0 +1,1 @@
+..\..\SAFeKit\PluginInstaller\HansoftClientPluginInstaller.exe -clocalhost:50257:"Clone":sdk:sdk -icom.hansoft.cloneprojectclientplugin:x86HansoftCloneProjectClientPlugin.dll:amd64HansoftCloneProjectClientPlugin.dll
