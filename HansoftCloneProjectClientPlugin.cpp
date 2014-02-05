@@ -127,38 +127,44 @@ public:
 		}
 	}
 
-	bool ProjectApplicable(HPMString projectName)
+	bool ProjectApplicable(HPMProjectProperties projectProps)
 	{
-		return projectName.compare(0, 11, hpm_str("Template - "))==0;
+		return (!projectProps.m_bArchivedStatus && projectProps.m_Name.compare(0, 11, hpm_str("Template - "))==0);
 	}
 
 	virtual void On_Callback(const HPMChangeCallbackData_RightClickDisplayTaskMenu &_Data)
 	{
 		try
 		{
-			m_pSession->GlobalAddRightClickMenuItem
-				(
-				_Data.m_RightClickContext
-				, hpm_str(""), m_IntegrationIdentifier + hpm_str(".taskmenu.cloneprojectclientplugin.root")
-				, m_pSession->LocalizationCreateUntranslatedStringFromString(hpm_str("Create project from template"))
-				, NULL
-				)
-				;
-
-			HPMProjectEnum projects = m_pSession->ProjectEnum();
-			for (unsigned i=0; i<projects.m_Projects.size(); i+=1)
+			// Only someone with Administrator rights is allowed to create new projects
+			HPMUniqueID loggedInUser = m_pSession->ResourceGetLoggedIn();
+			HPMResourceProperties resourceProps = m_pSession->ResourceGetProperties(loggedInUser);
+			if (resourceProps.m_Flags & EHPMResourceFlag_AdminAccess)
 			{
-				HPMProjectProperties properties = m_pSession->ProjectGetProperties(projects.m_Projects[i]);
-				if (ProjectApplicable(properties.m_Name))
-					m_pSession->GlobalAddRightClickMenuItem
-						(
-						_Data.m_RightClickContext
-						, m_IntegrationIdentifier + hpm_str(".taskmenu.cloneprojectclientplugin.root")
-						, m_IntegrationIdentifier + hpm_str(".taskmenu.cloneprojectclientplugin." + properties.m_Name)
-						, m_pSession->LocalizationCreateUntranslatedStringFromString(properties.m_Name)
-						, NULL
-						)
-						;
+				m_pSession->GlobalAddRightClickMenuItem
+					(
+					_Data.m_RightClickContext
+					, hpm_str(""), m_IntegrationIdentifier + hpm_str(".taskmenu.cloneprojectclientplugin.root")
+					, m_pSession->LocalizationCreateUntranslatedStringFromString(hpm_str("Create project from template"))
+					, NULL
+					)
+					;
+
+				HPMProjectEnum projects = m_pSession->ProjectEnum();
+				for (unsigned i=0; i<projects.m_Projects.size(); i+=1)
+				{
+					HPMProjectProperties properties = m_pSession->ProjectGetProperties(projects.m_Projects[i]);
+					if (ProjectApplicable(properties))
+						m_pSession->GlobalAddRightClickMenuItem
+							(
+							_Data.m_RightClickContext
+							, m_IntegrationIdentifier + hpm_str(".taskmenu.cloneprojectclientplugin.root")
+							, m_IntegrationIdentifier + hpm_str(".taskmenu.cloneprojectclientplugin." + properties.m_Name)
+							, m_pSession->LocalizationCreateUntranslatedStringFromString(properties.m_Name)
+							, NULL
+							)
+							;
+				}
 			}
 		}
 		catch (const HPMSdk::HPMSdkException &_Exception)
