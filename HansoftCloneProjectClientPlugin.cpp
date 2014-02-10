@@ -141,20 +141,25 @@ public:
 			HPMResourceProperties resourceProps = m_pSession->ResourceGetProperties(loggedInUser);
 			if (resourceProps.m_Flags & EHPMResourceFlag_AdminAccess)
 			{
-				m_pSession->GlobalAddRightClickMenuItem
-					(
-					_Data.m_RightClickContext
-					, hpm_str(""), m_IntegrationIdentifier + hpm_str(".taskmenu.cloneprojectclientplugin.root")
-					, m_pSession->LocalizationCreateUntranslatedStringFromString(hpm_str("Create project from template"))
-					, NULL
-					)
-					;
-
 				HPMProjectEnum projects = m_pSession->ProjectEnum();
+				bool rootMenuAdded = false;
 				for (unsigned i=0; i<projects.m_Projects.size(); i+=1)
 				{
 					HPMProjectProperties properties = m_pSession->ProjectGetProperties(projects.m_Projects[i]);
 					if (ProjectApplicable(properties))
+					{
+						if (!rootMenuAdded)
+						{
+							m_pSession->GlobalAddRightClickMenuItem
+								(
+								_Data.m_RightClickContext
+								, hpm_str(""), m_IntegrationIdentifier + hpm_str(".taskmenu.cloneprojectclientplugin.root")
+								, m_pSession->LocalizationCreateUntranslatedStringFromString(hpm_str("Create project from template"))
+								, NULL
+								)
+								;
+							rootMenuAdded = true;
+						}
 						m_pSession->GlobalAddRightClickMenuItem
 							(
 							_Data.m_RightClickContext
@@ -164,6 +169,7 @@ public:
 							, NULL
 							)
 							;
+					}
 				}
 			}
 		}

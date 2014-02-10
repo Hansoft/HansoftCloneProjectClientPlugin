@@ -9,7 +9,7 @@ program you need to have the SDK option enabled on your Hansoft Server.
 This plugin adds a menu item to the right-click menu in Hansoft called "Create project from template". Under this menu there
 will be submenu-items for each of the projects in the current database, provided that the project name starts with "Template - " .
 When selecting a project menu you will be asked to provide a name for a new project which then will be created using the
-selected projetct as a template. The following information will be copied to the new project from the selected template
+selected project as a template. The following information will be copied to the new project from the selected template
 project:
 
 * Custom columns in the schedule, product backlog, and QA section
@@ -17,6 +17,14 @@ project:
 * Reports in the schedule, product backlog, and QA section
 * Pipelines and workflows
 * The basic information and structure of tasks in the schedule and the product backlog
+
+Limitations
+-----------
+The following is not handled as part of cloning a project:
+* Documents that are stored in the document section of Hansoft (attachments to tasks are handled though).
+* Any workflows/pipelines that are set on tasks or set as default workflows/pipelines will not be handled.
+* Committment of product backlog items to the schedule or sprints will not be handled.
+* The bug workflow will not be handled.
 
 Terms and conditions
 --------------------
@@ -39,7 +47,14 @@ update the references to the  Hansoft SDK in the Visual Studio project.
 Installation
 ------------
 Install the client plugin with the [HansoftClientPluginInstaller] [1].
-[1]: http://github.com/Hansoft/HansoftClientPluginInstaller  "HansoftClientPluginInstaller"
+
+The plugin should be deployed together with [Jean for Hansoft] [2] and the [CloneProjectBehavior] [3] must be enabled for the Hansoft database
+that you want to clone projects in. You activate the CloneProjectBehavior by simply adding a
+<CloneProjectBehavior /> to the settings file for Jean.
+
+[1]: http://github.com/Hansoft/HansoftClientPluginInstaller         "HansoftClientPluginInstaller"
+[2]: http://github.com/Hansoft/Hansoft-Jean-Jean                    "Jean for Hansoft"
+[3]: http://github.com/Hansoft/Hansoft-Jean-CloneProjectBehavior    "CloneProjectBehavior"
 
 
 
