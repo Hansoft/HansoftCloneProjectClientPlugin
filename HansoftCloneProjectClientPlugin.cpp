@@ -325,10 +325,15 @@ public:
 
 	void CloneProject(HPMString newProjectName)
 	{
+		HPMInt32 loggedInUserID = m_pSession->ResourceGetLoggedIn().m_ID;
+		wstringstream Stream; 
+		Stream << loggedInUserID;
+		Stream << hpm_str(":");
+		Stream << m_selectedTemplate;
         HPMProjectProperties templateProperties = m_pSession->ProjectGetProperties(sourceProjectID);
         templateProperties.m_Name = newProjectName;
 		// TBD defuse this ugly hack when I understand how to this another way.
-		templateProperties.m_SortName = m_selectedTemplate;
+		templateProperties.m_SortName = Stream.str().c_str();
         tempTargetProjectID.m_ID = m_pSession->ProjectCreate(templateProperties).m_ID;
 	}
 };
