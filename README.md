@@ -14,9 +14,15 @@ project:
 
 * Custom columns in the schedule, product backlog, and QA section
 * View presets in the schedule, product backlog, and QA section
-* Reports in the schedule, product backlog, and QA section
+* Reports in the schedule, product backlog, and QA section.
 * Pipelines and workflows
-* The basic information and structure of tasks in the schedule and the product backlog
+* The basic information and structure of tasks in the schedule and the product backlog, including any attached documents.
+
+NOTE: The ownership of reports will be changed to the user that runs the command. If this user is not intended to be a
+permanent member of the created project you need to change the ownership of the reports to a user that will have main
+manager rights in the created project. To do this, log in as the intended main manager and select the menu alternative
+"More../Reports and trends/Create and share reports..." in the Schedule, Product backlog and QA views. Then, right-click
+on each report in the list and select "Transfer ownership to me" from the popup menu.
 
 Limitations
 -----------
